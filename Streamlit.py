@@ -50,9 +50,28 @@ plt.ylabel('Price')
 plt.xlabel('Date')
 plt.legend()
 plt.grid(True)
-
-# Format the x-axis to display dates
-#plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-
 plt.tight_layout()
 plt.show()
+
+
+# Create the Slider
+max_date = dates.max()
+min_date = dates.min()
+
+with st.container():
+    values = st.slider(
+        "Gold Prices Date Range",
+        min_value = min_date,
+        max_value = max_date,
+        value = (min_date, max_date)
+    )
+
+gold_prices['Date'] = gold_prices.to_datetime(gold_prices["Date"]).dt.date
+gold_prices = gold_prices.loc[(gold_prices['Date'] >= values[0])] & (gold_prices['Date']<= values[1])
+
+# Creating column to distinguish month/year date
+gold_prices['MONTH'] = gold_prices.DatetimeIndex(gold_prices['Date']).month.map("{:02}".format).astype(str)
+gold_prices['YEAR'] = gold_prices.DatetimeIndex(gold_prices['Date']).year.map("{:02}".format).astype(str)
+gold_prices['MONTH_YEAR'] = gold_prices['YEAR'] + '-' + gold_prices['MONTH']
+
+# Creating aggregated Datasets for visualizations
