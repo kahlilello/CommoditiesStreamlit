@@ -30,8 +30,12 @@ st.title('Gold Prices Visualization')
 # Function isualize Gold Table w/ LoBF
 
 def visualize(goldDf):
-    dates = goldDf['Date'].values
+    # Convert date strings to datetime objects
+    dates = pd.to_datetime(goldDf['Date'])
     gold_prices = goldDf['Gold'].values
+
+    # Ensure dates are sorted in ascending order
+    dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
 
 
     # Assuming you have already imported your data and created `dates` and `gold_prices`
@@ -49,35 +53,43 @@ def visualize(goldDf):
     # Plot the line of best fit
     plt.plot(dates, line_of_best_fit(mdates.date2num(dates)), color='red', label='Line of Best Fit', linestyle='--')
 
+
+    # Set x-axis limits
+    plt.xlim(min(dates_sorted), max(dates_sorted))
+
+    # Display date format on x-axis
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+    plt.gcf().autofmt_xdate()  # Rotate date labels for better readability
+
     plt.title("Gold Prices Over Time")
     plt.ylabel('Price')
     plt.xlabel('Date')
     plt.legend()
     plt.grid(True)
+
     plt.tight_layout()
 
-    st.pyplot(plt)
 
 # Visualize the Gold Prices
 visualize(goldDf)
 
 
-# Create the Slider
-max_date = pd.to_datetime(goldDf['Date']).max()
-min_date = pd.to_datetime(goldDf['Date']).min()
+# # Create the Slider
+# max_date = pd.to_datetime(goldDf['Date']).max()
+# min_date = pd.to_datetime(goldDf['Date']).min()
 
-values = st.slider(
-        "Gold Prices Date Range",
-        min_value = min_date,
-        max_value = max_date,
-        value = (min_date, max_date)
-    )
+# values = st.slider(
+#         "Gold Prices Date Range",
+#         min_value = min_date,
+#         max_value = max_date,
+#         value = (min_date, max_date)
+#     )
 
-# Filter Data based on selected date range
-filtered_goldDf = goldDf.loc[(goldDf['Date'] >= values[0]) & (goldDf['Date'] <= values[1])]
+# # Filter Data based on selected date range
+# filtered_goldDf = goldDf.loc[(goldDf['Date'] >= values[0]) & (goldDf['Date'] <= values[1])]
 
-# Display filtered data
-st.write(filtered_goldDf)
+# # Display filtered data
+# st.write(filtered_goldDf)
 
 # Everything below is from the previous work, may not be needed
 
