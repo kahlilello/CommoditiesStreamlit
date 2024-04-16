@@ -1,15 +1,10 @@
 import pandas as pd
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import seaborn as sns
 import numpy as np
-from scipy import stats
 from datetime import datetime
-from datetime import date 
 import streamlit as st
-
-
 
 # Data Ingestion
 data_path = "commodities_12_22.csv"
@@ -19,25 +14,28 @@ df = pd.read_csv(data_path)
 # Data Cleaning 
 commoditiesDf = df.dropna(axis=0)
 
-#Gold Table
+# Convert the 'Date' column to datetime objects
+commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
+
+# Gold Table
 goldDf = commoditiesDf[['Date','Gold']]
 
 # Set up Streamlit App
 st.title('\tGold Prices Visualization')
 
-
-
 # Function visualize Gold Table w/ LoBF
-def visualize(goldDf):
+def visualize(goldDf, date_range):
+    # Filter data based on selected date range
+    goldDf_filtered = goldDf[(goldDf['Date'] >= date_range[0]) & (goldDf['Date'] <= date_range[1])]
+
     # Convert date strings to datetime objects
-    dates = pd.to_datetime(goldDf['Date'])
-    gold_prices = goldDf['Gold'].values
+    dates = pd.to_datetime(goldDf_filtered['Date'])
+    gold_prices = goldDf_filtered['Gold'].values
 
     # Ensure dates are sorted in ascending order
     dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
 
-    # Assuming you have already imported your data and created `dates` and `gold_prices`
-    # Added ax this is apparently good practice
+    # Plotting
     fig, ax = plt.subplots(figsize=(12,6))
 
     # Plot the scatter points for gold prices
@@ -49,28 +47,15 @@ def visualize(goldDf):
     # Create the line of best fit equation
     line_of_best_fit = np.poly1d(coefficients)
 
-     # Plot the line of best fit
+    # Plot the line of best fit within the selected date range
     ax.plot(dates_sorted, line_of_best_fit(mdates.date2num(dates_sorted)), color='red', label='Line of Best Fit', linestyle='--')
-
 
     # Set x-axis limits
     ax.set_xlim(min(dates_sorted), max(dates_sorted))
 
     # Display date format on x-axis
-    # plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
-    # plt.gcf().autofmt_xdate()  # Rotate date labels for better readability
-
-    # Display date format on x-axis
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
     fig.autofmt_xdate()  # Rotate date labels for better readability
-
-
-    # plt.title("Gold Prices Over Time")
-    # plt.ylabel('Price')
-    # plt.xlabel('Date')
-    # plt.legend()
-    # plt.grid(True)
-
 
     ax.set_title("Gold Prices Over Time")
     ax.set_ylabel('Price')
@@ -78,44 +63,19 @@ def visualize(goldDf):
     ax.legend()
     ax.grid(True)
 
-
     plt.tight_layout()
-
-    # Display the plot using Streamlit
-    #st.pyplot()
 
     return fig
 
-    
+# Get minimum and maximum date from the dataframe
+min_date = goldDf['Date'].min()
+max_date = goldDf['Date'].max()
+
+# Create a slider to select date range
+date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date, value=(min_date, max_date))
 
 # Visualize the Gold Prices
-fig = visualize(goldDf)
+fig = visualize(goldDf, date_range)
 st.pyplot(fig)
 
 
-# # Create the Slider
-# max_date = pd.to_datetime(goldDf['Date']).max()
-# min_date = pd.to_datetime(goldDf['Date']).min()
-
-# values = st.slider(
-#         "Gold Prices Date Range",
-#         min_value = min_date,
-#         max_value = max_date,
-#         value = (min_date, max_date)
-#     )
-
-# # Filter Data based on selected date range
-# filtered_goldDf = goldDf.loc[(goldDf['Date'] >= values[0]) & (goldDf['Date'] <= values[1])]
-
-# # Display filtered data
-# st.write(filtered_goldDf)
-
-# Everything below is from the previous work, may not be needed
-
-# gold_prices['Date'] = gold_prices.to_datetime(gold_prices["Date"]).dt.date
-# gold_prices = gold_prices.loc[(gold_prices['Date'] >= values[0])] & (gold_prices['Date']<= values[1])
-
-# # Creating column to distinguish month/year date
-# gold_prices['MONTH'] = gold_prices.DatetimeIndex(gold_prices['Date']).month.map("{:02}".format).astype(str)
-# gold_prices['YEAR'] = gold_prices.DatetimeIndex(gold_prices['Date']).year.map("{:02}".format).astype(str)
-# gold_prices['MONTH_YEAR'] = gold_prices['YEAR'] + '-' + gold_prices['MONTH']
