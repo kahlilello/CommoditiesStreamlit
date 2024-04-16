@@ -63,6 +63,12 @@ def visualize(goldDf, date_range):
     ax.legend()
     ax.grid(True)
 
+    # Calculate average price
+    average_price = np.mean(gold_prices_sorted)
+
+    # Display average price above the slider
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Average Gold Price: ${average_price:.2f}</p>", unsafe_allow_html=True)
+    
     plt.tight_layout()
 
     return fig
