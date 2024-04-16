@@ -1,1 +1,0 @@
-export PATH="/usr/bin/pip3:$PATH"
