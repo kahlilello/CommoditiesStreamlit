@@ -26,6 +26,14 @@ selected_commodities = st.multiselect("Select Commodities", commoditiesDf.column
 # Filter dataframe based on selected commodities
 selected_commodities_df = commoditiesDf[['Date'] + selected_commodities]
 
+# Date range slider
+start_date = selected_commodities_df['Date'].min()
+end_date = selected_commodities_df['Date'].max()
+selected_start_date, selected_end_date = st.slider("Select Date Range", start_date, end_date, (start_date, end_date))
+
+# Filter dataframe based on selected date range
+selected_commodities_df = selected_commodities_df[(selected_commodities_df['Date'] >= selected_start_date) & (selected_commodities_df['Date'] <= selected_end_date)]
+
 dates = pd.to_datetime(selected_commodities_df['Date'])
 
 fig, ax = plt.subplots(figsize=(12,6))
@@ -49,7 +57,7 @@ for commodity in selected_commodities:
     ax.plot(dates_sorted, line_of_best_fit(mdates.date2num(dates_sorted)), linestyle='--')
 
 # Set x-axis limits
-ax.set_xlim(min(dates), max(dates))
+ax.set_xlim(selected_start_date, selected_end_date)
 
 # Display date format on x-axis
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
