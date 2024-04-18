@@ -21,7 +21,8 @@ commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
 st.title('\tCommodities Prices Visualization')
 
 # Multiselect to select commodities
-selected_commodities = st.multiselect("Select Commodities", commoditiesDf.columns[1:])
+selected_commodities = st.multiselect("Select Commodities", commoditiesDf.columns[1:], default=commoditiesDf.columns[1:].tolist())
+
 
 # Filter dataframe based on selected commodities
 selected_commodities_df = commoditiesDf[['Date'] + selected_commodities]
