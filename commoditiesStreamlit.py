@@ -37,6 +37,14 @@ selected_commodities_df = selected_commodities_df[(selected_commodities_df['Date
 
 dates = pd.to_datetime(selected_commodities_df['Date'])
 
+# Calculate average price for each selected commodity
+average_prices = selected_commodities_df[selected_commodities].mean()
+
+# Display average prices above the figure
+for commodity in selected_commodities:
+    st.write(f"Average Price of {commodity}: {average_prices[commodity]:.2f}")
+
+
 fig, ax = plt.subplots(figsize=(12,6))
 
 for commodity in selected_commodities:
