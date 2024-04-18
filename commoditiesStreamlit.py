@@ -40,10 +40,11 @@ dates = pd.to_datetime(selected_commodities_df['Date'])
 # Calculate average price for each selected commodity
 average_prices = selected_commodities_df[selected_commodities].mean()
 
+max_prices = selected_commodities_df[selected_commodities].max()
+
 # Display average prices above the figure
 for commodity in selected_commodities:
-    st.write(f"Average Price of {commodity}: {average_prices[commodity]:.2f}")
-
+    st.write(f"<b>{commodity}</b> \t Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f}", unsafe_allow_html=True)
 
 fig, ax = plt.subplots(figsize=(12,6))
 
