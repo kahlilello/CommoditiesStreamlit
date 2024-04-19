@@ -23,7 +23,6 @@ st.title('\tCommodities Prices Visualization')
 # Multiselect to select commodities
 selected_commodities = st.multiselect("Select Commodities", commoditiesDf.columns[1:], default=commoditiesDf.columns[1:].tolist())
 
-
 # Filter dataframe based on selected commodities
 selected_commodities_df = commoditiesDf[['Date'] + selected_commodities]
 
@@ -39,12 +38,25 @@ dates = pd.to_datetime(selected_commodities_df['Date'])
 
 # Calculate average price for each selected commodity
 average_prices = selected_commodities_df[selected_commodities].mean()
-
 max_prices = selected_commodities_df[selected_commodities].max()
 
 # Display average prices above the figure
-for commodity in selected_commodities:
-    st.write(f"<b>{commodity}</b> \t Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f}", unsafe_allow_html=True)
+if len(selected_commodities) > 1:
+    # Display metrics in two columns
+    col1, col2 = st.columns(2)
+    with col1:
+        st.write("<h3>Summary</h3>", unsafe_allow_html=True)
+        for commodity in selected_commodities[:len(selected_commodities)//2]:
+            st.write(f"<b>{commodity}</b>: Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f}", unsafe_allow_html=True)
+    with col2:
+        st.write("<h3><br> </h3>", unsafe_allow_html=True)
+        for commodity in selected_commodities[len(selected_commodities)//2:]:
+            st.write(f"<b>{commodity}</b>: Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f}", unsafe_allow_html=True)
+else:
+    # Display metrics in one column
+    st.write("<h3>Summary</h3>", unsafe_allow_html=True)
+    for commodity in selected_commodities:
+        st.write(f"<b>{commodity}</b>: Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f}", unsafe_allow_html=True)
 
 fig, ax = plt.subplots(figsize=(12,6))
 
@@ -82,3 +94,4 @@ ax.grid(True)
 plt.tight_layout()
 
 st.pyplot(fig)
+
