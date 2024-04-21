@@ -20,6 +20,9 @@ commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
 # Set up Streamlit App
 st.title('\tCommodities Prices Visualization')
 
+# Create a sidebar
+st.sidebar.success('Select a Page')
+
 # Multiselect to select commodities
 selected_commodities = st.multiselect("Select Commodities", commoditiesDf.columns[1:], default=commoditiesDf.columns[1:].tolist())
 
