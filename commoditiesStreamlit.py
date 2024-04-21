@@ -96,4 +96,3 @@ ax.grid(True)
 plt.tight_layout()
 
 st.pyplot(fig)
-

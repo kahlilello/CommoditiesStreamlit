@@ -83,5 +83,3 @@ date_range = st.slider('Select a date range', min_value=min_date, max_value=max_
 # Visualize the Gold Prices
 fig = visualize(goldDf, date_range)
 st.pyplot(fig)
-
-
