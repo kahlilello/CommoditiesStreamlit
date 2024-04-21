@@ -39,6 +39,8 @@ dates = pd.to_datetime(selected_commodities_df['Date'])
 # Calculate average price for each selected commodity
 average_prices = selected_commodities_df[selected_commodities].mean()
 max_prices = selected_commodities_df[selected_commodities].max()
+min_prices = selected_commodities_df[selected_commodities].min()
+
 
 # Display average prices above the figure
 if len(selected_commodities) > 1:
@@ -47,11 +49,11 @@ if len(selected_commodities) > 1:
     with col1:
         st.write("<h3>Summary</h3>", unsafe_allow_html=True)
         for commodity in selected_commodities[:len(selected_commodities)//2]:
-            st.write(f"<b>{commodity}</b>: Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f}", unsafe_allow_html=True)
+            st.write(f"<b>{commodity}</b> Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f} Min: {min_prices[commodity]:.2f}", unsafe_allow_html=True)
     with col2:
         st.write("<h3><br> </h3>", unsafe_allow_html=True)
         for commodity in selected_commodities[len(selected_commodities)//2:]:
-            st.write(f"<b>{commodity}</b>: Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f}", unsafe_allow_html=True)
+            st.write(f"<b>{commodity}</b> Avg: {average_prices[commodity]:.2f} Max: {max_prices[commodity]:.2f} Min: {min_prices[commodity]:.2f}", unsafe_allow_html=True)
 else:
     # Display metrics in one column
     st.write("<h3>Summary</h3>", unsafe_allow_html=True)
