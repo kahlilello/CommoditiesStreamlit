@@ -7,8 +7,15 @@
     - Run the python file using the command (streamlit run pythonFile.py)
     - To access Macbook hiddens (.), use cmd + shift + period.
         - The path to libs: /Users/meLOL  /Library/Python/3.9/lib/python
+    - Streamlit allows for multiple pages. This is done by created a sidebar code in the main page and a 'pages' folder for the other pages
 
 ##### Fun Side
 - ML Will be a lof of machine learning checks on the commodities_12_22.csv 
 - Added plots.
 - The streamlit will run with a slider. 
+
+#### Files
+- 1_🛢️_Main.py - This has the main site.
+- Pages
+    - 2_⚜️_Gold.py - This has the Gold Prices
+    - 
