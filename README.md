@@ -15,7 +15,7 @@
 - The streamlit will run with a slider. 
 
 #### Files
-- 1_🛢️_Main.py - This has the main site.
+- 1_📈_Main.py - This has the main site.
 - Pages
     - 2_⚜️_Gold.py - This has the Gold Prices
-    - 
+    - 3_🛢️_Oil - Has more views of the Brent and Crude Oil prices.
