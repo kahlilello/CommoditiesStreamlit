@@ -16,9 +16,9 @@ commoditiesDf = df.dropna(axis=0)
 # Convert the 'Date' column to datetime objects
 commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
 
-# Brent Oil Table
+# Copper Table
 copperDf = commoditiesDf[['Date','Copper']]
-# Crude Oil Table
+# Natural Gas Table
 naturalGasDf = commoditiesDf[['Date','Natural Gas']]
 
 # Set up Streamlit App
@@ -88,10 +88,10 @@ max_date = copperDf['Date'].max()
 # Create a slider to select date range
 date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date, value=(min_date, max_date))
 
-# Visualize the Brent Oil Prices
-fig_brent_oil = visualize(copperDf, 'Brent Oil', date_range)
-st.pyplot(fig_brent_oil)
+# Visualize the Copper Prices
+fig_copper = visualize(copperDf, 'Copper', date_range)
+st.pyplot(fig_copper)
 
-# Visualize the Crude Oil Prices
-fig_crude_oil = visualize(naturalGasDf, 'Crude Oil', date_range)
-st.pyplot(fig_crude_oil)
+# Visualize the Natural Gas Prices
+fig_natural_gas = visualize(naturalGasDf, 'Natural Gas', date_range)
+st.pyplot(fig_natural_gas)
