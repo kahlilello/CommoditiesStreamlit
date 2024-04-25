@@ -18,4 +18,6 @@
 - 1_📈_Main.py - This has the main site.
 - Pages
     - 2_⚜️_Gold.py - This has the Gold Prices
-    - 3_🛢️_Oil - Has more views of the Brent and Crude Oil prices.
+    - 3_🥈_Silver.py - This has the Silver Visuals.
+    - 4_🛢️_Oil - Has more views of the Brent and Crude Oil prices.
+    - 5_🥉_Copper&Gas.py - Has Copper and Natural Gas Visuals.
