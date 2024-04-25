@@ -5,6 +5,24 @@ import matplotlib.dates as mdates
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
+from datetime import datetime, timedelta
+
+# Sample data generation function
+def generate_data(start_date, end_date):
+    dates = []
+    prices = []
+    current_date = start_date
+    while current_date <= end_date:
+        dates.append(current_date)
+        price = 50 + np.random.randn() * 10
+        prices.append(price)
+        current_date += timedelta(days=1)
+    return np.array(dates), np.array(prices)
+
+# Generate sample data
+start_date = datetime(2020, 1, 1)
+end_date = datetime(2022, 12, 31)
+dates, gold_prices = generate_data(start_date, end_date)
 
 # Function to train SVR model and plot predictions
 def train_and_plot_svr(dates, gold_prices, C, gamma, epsilon):
@@ -44,9 +62,6 @@ def train_and_plot_svr(dates, gold_prices, C, gamma, epsilon):
 def main():
     st.title('Gold Price Prediction with SVR')
     st.sidebar.title('SVR Hyperparameters')
-    
-    # Load data
-    # Assuming you have already imported your data and created `dates` and `gold_prices`
     
     # Slider for C
     C = st.sidebar.slider('C', 0.1, 10.0, 1.0)
