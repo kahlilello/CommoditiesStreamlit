@@ -6,7 +6,8 @@ import numpy as np
 import streamlit as st
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
+from sklearn.preprocessing import StandardScaler
 
 # Data Ingestion
 data_path = "commodities_12_22.csv"
@@ -44,16 +45,21 @@ def visualize(goldDf, date_range):
     # Split data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Random Forest model
-    rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
-    rf_model.fit(X_train, y_train)
+    # Feature scaling
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    # SVR model
+    svr_model = SVR(kernel='rbf')
+    svr_model.fit(X_train_scaled, y_train)
 
     # Predict using the trained models
-    predicted_prices_train = rf_model.predict(X_train)
-    predicted_prices_test = rf_model.predict(X_test)
+    predicted_prices_train = svr_model.predict(X_train_scaled)
+    predicted_prices_test = svr_model.predict(X_test_scaled)
 
     # Predict using the trained models for entire date range
-    predicted_prices = rf_model.predict(X)
+    predicted_prices = svr_model.predict(scaler.transform(X))
 
     # Plotting
     fig, axes = plt.subplots(2, 1, figsize=(12, 12))
@@ -61,7 +67,7 @@ def visualize(goldDf, date_range):
     # Plot the scatter points for gold prices and line of best fit
     ax1 = axes[0]
     ax1.plot(dates_sorted, gold_prices_sorted, label='Gold Prices')
-    ax1.plot(dates, predicted_prices, color='orange', label='Random Forest (Model)')
+    ax1.plot(dates, predicted_prices, color='orange', label='SVR (Model)')
     ax1.set_title("Gold Prices Over Time")
     ax1.set_ylabel('Price')
     ax1.set_xlabel('Date')
