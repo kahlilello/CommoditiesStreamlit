@@ -1,83 +1,97 @@
-import streamlit as st
+import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 import matplotlib.dates as mdates
-from sklearn.svm import SVR
+import seaborn as sns
+import numpy as np
+import streamlit as st
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-from datetime import datetime, timedelta
+from sklearn.ensemble import GradientBoostingRegressor
 
-# Sample data generation function
-def generate_data(start_date, end_date):
-    dates = []
-    prices = []
-    current_date = start_date
-    while current_date <= end_date:
-        dates.append(current_date)
-        price = 50 + np.random.randn() * 10
-        prices.append(price)
-        current_date += timedelta(days=1)
-    return np.array(dates), np.array(prices)
+# Data Ingestion
+data_path = "commodities_12_22.csv"
+# Read the CSV file into a pandas dataframe
+df = pd.read_csv(data_path)
 
-# Function to train SVR model and plot predictions
-def train_and_plot_svr(dates, gold_prices, C, gamma, epsilon):
-    plt.figure(figsize=(12,6))
-    plt.plot(dates, gold_prices, label='Gold Prices')
-    
-    # Generate indices for dates
-    indices = np.arange(len(dates)).reshape(-1, 1)
-    
-    model = SVR(kernel='rbf', C=C, gamma=gamma, epsilon=epsilon)
-    model.fit(indices, gold_prices)
+# Data Cleaning 
+commoditiesDf = df.dropna(axis=0)
 
-    # Generate indices for all dates
-    all_indices = np.arange(len(dates) + 365).reshape(-1, 1)
-    
-    # Predict prices for all dates
-    predicted_prices_all = model.predict(all_indices)
-    
-    plt.plot(dates, predicted_prices_all[:len(dates)], color='red', label='Predicted Line')
+# Convert the 'Date' column to datetime objects
+commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
 
-    plt.title("Gold Prices Over Time (SVR)")
-    plt.ylabel('Price')
-    plt.xlabel('Date')
-    plt.legend()
-    plt.grid(True)
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+# Gold Table
+goldDf = commoditiesDf[['Date','Gold']]
+
+# Set up Streamlit App
+st.title('\tGold Prices Visualization')
+
+# Function visualize Gold Table w/ LoBF
+def visualize(goldDf, date_range):
+    # Filter data based on selected date range
+    goldDf_filtered = goldDf[(goldDf['Date'] >= date_range[0]) & (goldDf['Date'] <= date_range[1])]
+
+    # Convert date strings to datetime objects
+    dates = pd.to_datetime(goldDf_filtered['Date'])
+    gold_prices = goldDf_filtered['Gold'].values
+
+    # Ensure dates are sorted in ascending order
+    dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
+
+    # Split data into features and target
+    X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
+    y = gold_prices_sorted
+
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Gradient Boosting model
+    gb_model = GradientBoostingRegressor(random_state=42)
+    gb_model.fit(X_train, y_train)
+
+    # Predict using the trained models
+    predicted_prices_train = gb_model.predict(X_train)
+    predicted_prices_test = gb_model.predict(X_test)
+
+    # Predict using the trained models for entire date range
+    predicted_prices = gb_model.predict(X)
+
+    # Plotting
+    fig, axes = plt.subplots(2, 1, figsize=(12, 12))
+
+    # Plot the scatter points for gold prices and line of best fit
+    ax1 = axes[0]
+    ax1.plot(dates_sorted, gold_prices_sorted, label='Gold Prices')
+    ax1.plot(dates, predicted_prices, color='orange', label='Gradient Boosting (Model)')
+    ax1.set_title("Gold Prices Over Time")
+    ax1.set_ylabel('Price')
+    ax1.set_xlabel('Date')
+    ax1.legend()
+    ax1.grid(True)
+
+    # Calculate and display mean squared error
+    mse_train = mean_squared_error(y_train, predicted_prices_train)
+    mse_test = mean_squared_error(y_test, predicted_prices_test)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Training): {mse_train:.2f}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Testing): {mse_test:.2f}</p>", unsafe_allow_html=True)
+
+    # Histogram and KDE
+    ax2 = axes[1]
+    sns.histplot(gold_prices_sorted, kde=True, color="skyblue", ax=ax2)
+    ax2.set_title("Gold Price Distribution (Histogram & KDE)")
+    ax2.set_xlabel("Gold Price")
+    ax2.set_ylabel("Frequency")
+
     plt.tight_layout()
-    return plt
 
-# Streamlit app
-def main():
-    st.title('Gold Price Prediction with SVR')
-    st.sidebar.title('SVR Hyperparameters')
-    
-    # Generate sample data
-    start_date = datetime(2020, 1, 1)
-    end_date = datetime(2022, 12, 31)
-    dates, gold_prices = generate_data(start_date, end_date)
-    
-    # Slider for C
-    C = st.sidebar.slider('C', 0.1, 10.0, 1.0)
-    
-    # Slider for gamma
-    gamma = st.sidebar.slider('Gamma', 0.001, 1.0, 0.1)
-    
-    # Slider for epsilon
-    epsilon = st.sidebar.slider('Epsilon', 0.1, 5.0, 1.0)
-    
-    # Train and plot SVR model
-    plt = train_and_plot_svr(dates, gold_prices, C, gamma, epsilon)
-    st.pyplot(plt)
+    return fig
 
-    # Calculate and display MSE
-    indices = np.arange(len(dates)).reshape(-1, 1)
-    model = SVR(kernel='rbf', C=C, gamma=gamma, epsilon=epsilon)
-    model.fit(indices, gold_prices)
+# Get minimum and maximum date from the dataframe
+min_date = goldDf['Date'].min()
+max_date = goldDf['Date'].max()
 
-    predicted_prices = model.predict(indices)
-    mse = mean_squared_error(gold_prices, predicted_prices)
-    
-    st.write(f"Mean Squared Error: {mse}")
+# Create a slider to select date range
+date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date, value=(min_date, max_date))
 
-if __name__ == "__main__":
-    main()
+# Visualize the Gold Prices
+fig = visualize(goldDf, date_range)
+st.pyplot(fig)
