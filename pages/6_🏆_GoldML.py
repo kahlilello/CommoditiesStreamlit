@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.dates as mdates
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import train_test_split
 from datetime import datetime, timedelta
 
 # Sample data generation function
@@ -19,30 +18,24 @@ def generate_data(start_date, end_date):
         current_date += timedelta(days=1)
     return np.array(dates), np.array(prices)
 
-# Generate sample data
-start_date = datetime(2020, 1, 1)
-end_date = datetime(2022, 12, 31)
-dates, gold_prices = generate_data(start_date, end_date)
-
 # Function to train SVR model and plot predictions
 def train_and_plot_svr(dates, gold_prices, C, gamma, epsilon):
     plt.figure(figsize=(12,6))
     plt.plot(dates, gold_prices, label='Gold Prices')
     
-    dates_num = mdates.date2num(dates).reshape(-1, 1)
-    X_train, X_test, y_train, y_test = train_test_split(dates_num, gold_prices, test_size=0.2, random_state=42)
+    # Generate indices for dates
+    indices = np.arange(len(dates)).reshape(-1, 1)
     
     model = SVR(kernel='rbf', C=C, gamma=gamma, epsilon=epsilon)
-    model.fit(X_train, y_train)
+    model.fit(indices, gold_prices)
 
-    predicted_prices_train = model.predict(X_train)
-    predicted_prices_test = model.predict(X_test)
+    # Generate indices for all dates
+    all_indices = np.arange(len(dates) + 365).reshape(-1, 1)
     
-    sort_indices_train = np.argsort(X_train.flatten())
-    sort_indices_test = np.argsort(X_test.flatten())
-
-    plt.plot(X_train[sort_indices_train], predicted_prices_train[sort_indices_train], color='green', label='Predicted Line (Training)')
-    plt.plot(X_test[sort_indices_test], predicted_prices_test[sort_indices_test], color='blue', label='Predicted Line (Testing)')
+    # Predict prices for all dates
+    predicted_prices_all = model.predict(all_indices)
+    
+    plt.plot(dates, predicted_prices_all[:len(dates)], color='red', label='Predicted Line')
 
     plt.title("Gold Prices Over Time (SVR)")
     plt.ylabel('Price')
@@ -51,17 +44,17 @@ def train_and_plot_svr(dates, gold_prices, C, gamma, epsilon):
     plt.grid(True)
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
     plt.tight_layout()
-    st.pyplot(plt)
-
-    mse_train = mean_squared_error(y_train, predicted_prices_train)
-    mse_test = mean_squared_error(y_test, predicted_prices_test)
-    st.write(f"Mean Squared Error (Training): {mse_train}")
-    st.write(f"Mean Squared Error (Testing): {mse_test}")
+    return plt
 
 # Streamlit app
 def main():
     st.title('Gold Price Prediction with SVR')
     st.sidebar.title('SVR Hyperparameters')
+    
+    # Generate sample data
+    start_date = datetime(2020, 1, 1)
+    end_date = datetime(2022, 12, 31)
+    dates, gold_prices = generate_data(start_date, end_date)
     
     # Slider for C
     C = st.sidebar.slider('C', 0.1, 10.0, 1.0)
@@ -73,7 +66,18 @@ def main():
     epsilon = st.sidebar.slider('Epsilon', 0.1, 5.0, 1.0)
     
     # Train and plot SVR model
-    train_and_plot_svr(dates, gold_prices, C, gamma, epsilon)
+    plt = train_and_plot_svr(dates, gold_prices, C, gamma, epsilon)
+    st.pyplot(plt)
+
+    # Calculate and display MSE
+    indices = np.arange(len(dates)).reshape(-1, 1)
+    model = SVR(kernel='rbf', C=C, gamma=gamma, epsilon=epsilon)
+    model.fit(indices, gold_prices)
+
+    predicted_prices = model.predict(indices)
+    mse = mean_squared_error(gold_prices, predicted_prices)
+    
+    st.write(f"Mean Squared Error: {mse}")
 
 if __name__ == "__main__":
     main()
