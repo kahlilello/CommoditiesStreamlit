@@ -6,7 +6,7 @@ import numpy as np
 import streamlit as st
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-from sklearn.svm import SVR
+from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import StandardScaler
 
 # Data Ingestion
@@ -50,16 +50,16 @@ def visualize(goldDf, date_range):
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
 
-    # SVR model
-    svr_model = SVR(kernel='rbf')
-    svr_model.fit(X_train_scaled, y_train)
+    # MLP Regressor model
+    mlp_model = MLPRegressor(hidden_layer_sizes=(100, 100), activation='relu', solver='adam', random_state=42)
+    mlp_model.fit(X_train_scaled, y_train)
 
     # Predict using the trained models
-    predicted_prices_train = svr_model.predict(X_train_scaled)
-    predicted_prices_test = svr_model.predict(X_test_scaled)
+    predicted_prices_train = mlp_model.predict(X_train_scaled)
+    predicted_prices_test = mlp_model.predict(X_test_scaled)
 
     # Predict using the trained models for entire date range
-    predicted_prices = svr_model.predict(scaler.transform(X))
+    predicted_prices = mlp_model.predict(scaler.transform(X))
 
     # Plotting
     fig, axes = plt.subplots(2, 1, figsize=(12, 12))
@@ -67,7 +67,7 @@ def visualize(goldDf, date_range):
     # Plot the scatter points for gold prices and line of best fit
     ax1 = axes[0]
     ax1.plot(dates_sorted, gold_prices_sorted, label='Gold Prices')
-    ax1.plot(dates, predicted_prices, color='orange', label='SVR (Model)')
+    ax1.plot(dates, predicted_prices, color='orange', label='MLP (Model)')
     ax1.set_title("Gold Prices Over Time")
     ax1.set_ylabel('Price')
     ax1.set_xlabel('Date')
