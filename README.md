@@ -21,3 +21,5 @@
     - 3_🥈_Silver.py - This has the Silver Visuals.
     - 4_🛢️_Oil - Has more views of the Brent and Crude Oil prices.
     - 5_🥉_Copper&Gas.py - Has Copper and Natural Gas Visuals.
+    - 6_🏆_GoldML.py - Has GoldML code
+    - 7_🪙_SilverML.py - Has SilverML code
