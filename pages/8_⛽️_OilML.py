@@ -20,84 +20,95 @@ commoditiesDf = df.dropna(axis=0)
 # Convert the 'Date' column to datetime objects
 commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
 
-# Silver Table
-silverDf = commoditiesDf[['Date','Silver']]
+# Brent Oil Table
+brentOilDf = commoditiesDf[['Date','Brent Oil']]
+# Crude Oil Table
+crudeOilDf = commoditiesDf[['Date','Crude Oil']]
 
 # Set up Streamlit App
-st.title('\tSilver Prices Visualization')
+st.title('\tOil Prices Visualization')
 
-# Function visualize Silver Table w/ LoBF
-def visualize(silverDf, date_range):
+# Function visualize Oil Prices w/ LoBF and MLP
+def visualize(data, commodity, date_range):
     # Filter data based on selected date range
-    silverDf_filtered = silverDf[(silverDf['Date'] >= date_range[0]) & (silverDf['Date'] <= date_range[1])]
+    data_filtered = data[(data['Date'] >= date_range[0]) & (data['Date'] <= date_range[1])]
 
     # Convert date strings to datetime objects
-    dates = pd.to_datetime(silverDf_filtered['Date'])
-    silver_prices = silverDf_filtered['Silver'].values
+    dates = pd.to_datetime(data_filtered['Date'])
+    prices = data_filtered[commodity].values
 
     # Ensure dates are sorted in ascending order
-    dates_sorted, silver_prices_sorted = zip(*sorted(zip(dates, silver_prices)))
+    dates_sorted, prices_sorted = zip(*sorted(zip(dates, prices)))
 
     # Split data into features and target
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
-    y = silver_prices_sorted
-
-    # Split data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    y = prices_sorted
 
     # Feature scaling
     scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
+    X_scaled = scaler.fit_transform(X)
 
     # MLP Regressor model
     mlp_model = MLPRegressor(hidden_layer_sizes=(100, 100), activation='relu', solver='adam', random_state=42)
-    mlp_model.fit(X_train_scaled, y_train)
+    mlp_model.fit(X_scaled, y)
 
-    # Predict using the trained models
-    predicted_prices_train = mlp_model.predict(X_train_scaled)
-    predicted_prices_test = mlp_model.predict(X_test_scaled)
-
-    # Predict using the trained models for entire date range
-    predicted_prices = mlp_model.predict(scaler.transform(X))
+    # Predict using the trained model for entire date range
+    predicted_prices = mlp_model.predict(X_scaled)
 
     # Plotting
-    fig, axes = plt.subplots(2, 1, figsize=(12, 12))
+    fig, axes = plt.subplots(4, 1, figsize=(12, 20))
 
-    # Plot the scatter points for silver prices and line of best fit
+    # Plot the scatter points for prices and MLP predictions
     ax1 = axes[0]
-    ax1.plot(dates_sorted, silver_prices_sorted, label='Silver Prices')
-    ax1.plot(dates, predicted_prices, color='orange', label='MLP (Model)')
-    ax1.set_title("Silver Prices Over Time")
+    ax1.plot(dates_sorted, prices_sorted, label=f'{commodity} Prices')
+    ax1.plot(dates_sorted, predicted_prices, color='orange', label='MLP (Model)')
+    ax1.set_title(f"{commodity} Prices Over Time with MLP Prediction")
     ax1.set_ylabel('Price')
     ax1.set_xlabel('Date')
     ax1.legend()
     ax1.grid(True)
 
     # Calculate and display mean squared error
-    mse_train = mean_squared_error(y_train, predicted_prices_train)
-    mse_test = mean_squared_error(y_test, predicted_prices_test)
-    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Training): {mse_train:.2f}</p>", unsafe_allow_html=True)
-    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Testing): {mse_test:.2f}</p>", unsafe_allow_html=True)
+    mse = mean_squared_error(y, predicted_prices)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error: {mse:.2f}</p>", unsafe_allow_html=True)
 
     # Histogram and KDE
     ax2 = axes[1]
-    sns.histplot(silver_prices_sorted, kde=True, color="skyblue", ax=ax2)
-    ax2.set_title("Silver Price Distribution (Histogram & KDE)")
-    ax2.set_xlabel("Silver Price")
+    sns.histplot(prices_sorted, kde=True, color="skyblue", ax=ax2)
+    ax2.set_title(f"{commodity} Price Distribution (Histogram & KDE)")
+    ax2.set_xlabel(f"{commodity} Price")
     ax2.set_ylabel("Frequency")
+
+    # Box Plot
+    ax3 = axes[2]
+    sns.boxplot(x=prices_sorted, ax=ax3, orient='h', color='lightblue')
+    ax3.set_title(f"{commodity} Price Distribution (Box Plot)")
+    ax3.set_xlabel(f"{commodity} Price")
+
+    # Heatmap
+    ax4 = axes[3]
+    numeric_dates = mdates.date2num(dates_sorted)
+    data = np.vstack((numeric_dates, prices_sorted)).T
+    correlation_matrix = np.corrcoef(data, rowvar=False)
+    sns.heatmap(correlation_matrix, annot=True, cmap="YlGnBu", ax=ax4, 
+                xticklabels=["Date", f"{commodity} Price"], yticklabels=["Date", f"{commodity} Price"])
+    ax4.set_title(f"{commodity} Price Correlation Heatmap")
 
     plt.tight_layout()
 
     return fig
 
 # Get minimum and maximum date from the dataframe
-min_date = silverDf['Date'].min()
-max_date = silverDf['Date'].max()
+min_date = brentOilDf['Date'].min()
+max_date = brentOilDf['Date'].max()
 
 # Create a slider to select date range
 date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date, value=(min_date, max_date))
 
-# Visualize the Silver Prices
-fig = visualize(silverDf, date_range)
-st.pyplot(fig)
+# Visualize the Brent Oil Prices
+fig_brent_oil = visualize(brentOilDf, 'Brent Oil', date_range)
+st.pyplot(fig_brent_oil)
+
+# Visualize the Crude Oil Prices
+fig_crude_oil = visualize(crudeOilDf, 'Crude Oil', date_range)
+st.pyplot(fig_crude_oil)
