@@ -70,7 +70,7 @@ def visualize(data, commodity, date_range):
 
     # Calculate and display mean squared error
     mse = mean_squared_error(y, predicted_prices)
-    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error: {mse:.2f}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>{commodity} Mean Squared Error: {mse:.2f}</p>", unsafe_allow_html=True)
 
     # Histogram and KDE
     ax2 = axes[1]
