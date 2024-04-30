@@ -24,3 +24,5 @@
     - 6_🏆_GoldML.py - Has Gold Machine Learning code
     - 7_🪙_SilverML.py - Has Silver Machine Learning code
     - 8_⛽️_OilML.py - Beginning of Oil Machine Learning Code
+    - 9_𐂚_Copper&GasML - Beginning of Copper and Gas Machine Learning Code.
+    
