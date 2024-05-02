@@ -36,8 +36,13 @@ def visualize(data, commodity, date_range):
     # Filter Data based on selected date range
     data_filtered = data[(data['Date'] >= date_range[0]) & (data['Date'] <= date_range[1])]
 
-    #Convert date strings to datetime objects
+    # Convert date strings to datetime objects
     dates = pd.to_datetime(data_filtered['Date'])
     prices = data_filtered[commodity].values
 
-    
+    # Ensure dates are sorted in ascending order
+    dates_sorted, prices_sorted = zip(*sorted(zip(dates, prices)))
+
+    # Split data into features and targets
+    X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
+    y = prices_sorted
