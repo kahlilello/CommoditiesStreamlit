@@ -26,3 +26,11 @@ copperDf = commoditiesDf['Date', 'Copper']
 # Natural Gas Table
 naturalgasDf = commoditiesDf['Date', 'Natural Gas']
 
+
+# Set up Streamlit App
+st.title('\tCopper & Natural Gas Visualization')
+
+
+# Function visualization Copper & Natural Gas w/ LoBF and MLP
+def visualize(data, commodity, date_range):
+    
