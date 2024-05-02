@@ -33,4 +33,11 @@ st.title('\tCopper & Natural Gas Visualization')
 
 # Function visualization Copper & Natural Gas w/ LoBF and MLP
 def visualize(data, commodity, date_range):
+    # Filter Data based on selected date range
+    data_filtered = data[(data['Date'] >= date_range[0]) & (data['Date'] <= date_range[1])]
+
+    #Convert date strings to datetime objects
+    dates = pd.to_datetime(data_filtered['Date'])
+    prices = data_filtered[commodity].values
+
     
