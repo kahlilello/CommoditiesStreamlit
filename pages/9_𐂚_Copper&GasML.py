@@ -17,3 +17,7 @@ df = pd.read_csv(data_path)
 # Data Cleaning
 commoditiesDf = df.dropna(axis=0)
 
+# Convert the 'Date' col to datetime obj
+commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
+
+
