@@ -46,3 +46,8 @@ def visualize(data, commodity, date_range):
     # Split data into features and targets
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
     y = prices_sorted
+
+    # Feature scaling
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
