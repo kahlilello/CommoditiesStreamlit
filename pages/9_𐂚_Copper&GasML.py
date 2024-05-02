@@ -20,4 +20,9 @@ commoditiesDf = df.dropna(axis=0)
 # Convert the 'Date' col to datetime obj
 commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
 
+# Copper Table
+copperDf = commoditiesDf['Date', 'Copper']
+
+# Natural Gas Table
+naturalgasDf = commoditiesDf['Date', 'Natural Gas']
 
