@@ -55,4 +55,5 @@ def visualize(data, commodity, date_range):
     mlp_model = MLPRegressor(hidden_later_sizes=(100, 100), activation = 'relu', solver = 'adam', random_state = 42)
     mlp_model.fit(X_scaled, y)
 
-    
+    # Predict using the trained model for entire date range
+    predicted_prices = mlp_model.predict(X_scaled)
