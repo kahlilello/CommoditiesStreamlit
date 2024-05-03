@@ -81,3 +81,10 @@ def visualize(data, commodity, date_range):
     ax2.set_title(f"{commodity} Price Distribution (Historgram & KDE)")
     ax2.set_xlabel(f"{commodity} Price")
     ax2.set_ylabel("Frequency")
+
+    # Box Plot
+    ax3 = axes[2]
+    sns.boxplot(x=prices_sorted, ax=ax3, orient='h', color='lightblue')
+    ax3.set_title(f"{commodity} Price Distribution (Box Plot)")
+    ax3.set_xlabel(f"{commodity} Price")
+    
