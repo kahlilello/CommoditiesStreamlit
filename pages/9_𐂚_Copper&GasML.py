@@ -70,5 +70,8 @@ def visualize(data, commodity, date_range):
     ax1.set_xlabel('Date')
     ax1.legend()
     ax1.grid(True)
-    
 
+    # Calculate and display mean squared error
+    mse = mean_squared_error(y, predicted_prices)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>{commodity} Mean Squared Error: {mse:.2f}</p>", unsafe_allow_html = True)
+    
