@@ -57,3 +57,18 @@ def visualize(data, commodity, date_range):
 
     # Predict using the trained model for entire date range
     predicted_prices = mlp_model.predict(X_scaled)
+
+    # Plotting 
+    fig, axes = plt.subplots(4, 1, figsize=(12,20))
+
+    # Plot the scatter points for prices and MLP predictions
+    ax1 = axes[0]
+    ax1.plot(dates_sorted, prices_sorted, label=f'{commodity} Prices')
+    ax1.plot(dates_sorted, predicted_prices, color = 'orange', label = 'MLP (Model)')
+    ax1.set_title(f"{commodity} Prices Over Time with MLP Prediction")
+    ax1.set_ylabel('Price')
+    ax1.set_xlabel('Date')
+    ax1.legend()
+    ax1.grid(True)
+    
+
