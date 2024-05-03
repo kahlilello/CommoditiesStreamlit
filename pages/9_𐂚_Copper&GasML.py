@@ -74,4 +74,10 @@ def visualize(data, commodity, date_range):
     # Calculate and display mean squared error
     mse = mean_squared_error(y, predicted_prices)
     st.markdown(f"<p style='font-size:18px;font-weight:bold;'>{commodity} Mean Squared Error: {mse:.2f}</p>", unsafe_allow_html = True)
-    
+
+    # Histogram and KDE
+    ax2 = axes[1]
+    sns.histplot(prices_sorted, kde=True, color="skyblue", ax=ax2)
+    ax2.set_title(f"{commodity} Price Distribution (Historgram & KDE)")
+    ax2.set_xlabel(f"{commodity} Price")
+    ax2.set_ylabel("Frequency")
