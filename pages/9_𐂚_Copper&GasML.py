@@ -88,4 +88,7 @@ def visualize(data, commodity, date_range):
     ax3.set_title(f"{commodity} Price Distribution (Box Plot)")
     ax3.set_xlabel(f"{commodity} Price")
 
+    # Heatmap
+    ax4 = axes[3]
+    numeric_dates = mdates.date2num(dates_sorted)
     
