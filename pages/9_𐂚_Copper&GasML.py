@@ -87,4 +87,5 @@ def visualize(data, commodity, date_range):
     sns.boxplot(x=prices_sorted, ax=ax3, orient='h', color='lightblue')
     ax3.set_title(f"{commodity} Price Distribution (Box Plot)")
     ax3.set_xlabel(f"{commodity} Price")
+
     
