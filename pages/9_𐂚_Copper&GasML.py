@@ -100,3 +100,6 @@ def visualize(data, commodity, date_range):
 
     return fig
 
+# Get Minimum and Maximum date from the dataframe
+min_date = copperDf['Date'].min()
+max_date = copperDf['Date'].max()
