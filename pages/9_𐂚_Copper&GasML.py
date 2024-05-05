@@ -95,3 +95,8 @@ def visualize(data, commodity, date_range):
     correlation_matrix = np.corrcoef(data, rowvar=False)
     sns.heatmap(correlation_matrix, annot = True, cmap = "TlGnBu", ax = ax4, xticklabels=["Date", f"{commodity} Price"], yticklabels = ["Date", f"{commodity} Price"])
     ax4.set_title(f"{commodity} Price Correlation Heatmap")
+
+    plt.tight_layout()
+
+    return fig
+
