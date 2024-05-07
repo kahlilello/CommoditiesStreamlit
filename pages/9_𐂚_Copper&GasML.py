@@ -111,4 +111,8 @@ date_range = st.slider('Select a date range', min_value = min_date, max_value=ma
 fig_copper = visualize(copperDf, 'Copper', date_range)
 st.pyplot(fig_copper)
 
+# Visualize the Natural Gas Prices
+fig_natural_gas = visualize(naturalgasDf, 'Natural Gas', date_range)
+st.pyplot(fig_natural_gas)
+
 
