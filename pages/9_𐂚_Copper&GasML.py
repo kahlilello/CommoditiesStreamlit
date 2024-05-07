@@ -52,7 +52,7 @@ def visualize(data, commodity, date_range):
     X_scaled = scaler.fit_transform(X)
 
     # MLP Regressor model
-    mlp_model = MLPRegressor(hidden_later_sizes=(100, 100), activation = 'relu', solver = 'adam', random_state = 42)
+    mlp_model = MLPRegressor(hidden_layer_sizes=(100, 100), activation = 'relu', solver = 'adam', random_state = 42)
     mlp_model.fit(X_scaled, y)
 
     # Predict using the trained model for entire date range
