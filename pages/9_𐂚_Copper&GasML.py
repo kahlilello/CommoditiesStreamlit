@@ -106,3 +106,9 @@ max_date = copperDf['Date'].max()
 
 # Create a slider to select date range
 date_range = st.slider('Select a date range', min_value = min_date, max_value=max_date, value=(min_date, max_date))
+
+# Visualize the Copper Prices
+fig_copper = visualize(copperDf, 'Copper', date_range)
+st.pyplot(fig_copper)
+
+
