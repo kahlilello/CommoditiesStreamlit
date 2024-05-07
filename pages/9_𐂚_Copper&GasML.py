@@ -21,10 +21,10 @@ commoditiesDf = df.dropna(axis=0)
 commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
 
 # Copper Table
-copperDf = commoditiesDf['Date', 'Copper']
+copperDf = commoditiesDf[['Date', 'Copper']]
 
 # Natural Gas Table
-naturalgasDf = commoditiesDf['Date', 'Natural Gas']
+naturalgasDf = commoditiesDf[['Date', 'Natural Gas']]
 
 
 # Set up Streamlit App
