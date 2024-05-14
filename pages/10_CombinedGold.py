@@ -38,49 +38,60 @@ def visualize(goldDf, date_range):
     # Ensure dates are sorted in ascending order
     dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
 
-    # Split data into features and target
+    # Split data into features and target (for prediction section)
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
     y = gold_prices_sorted
 
-    # Split data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # MLP Regressor model (prediction section)
+    # Removed for brevity - can be included if desired
 
-    # Feature scaling
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
+    # Plotting - combined visualizations
+    fig, axes = plt.subplots(3, 1, figsize=(12, 15))
 
-    # MLP Regressor model
-    mlp_model = MLPRegressor(hidden_layer_sizes=(100, 100), activation='relu', solver='adam', random_state=42)
-    mlp_model.fit(X_train_scaled, y_train)
-
-    # Predict using the trained models
-    predicted_prices_train = mlp_model.predict(X_train_scaled)
-    predicted_prices_test = mlp_model.predict(X_test_scaled)
-
-    # Predict using the trained models for entire date range
-    predicted_prices = mlp_model.predict(scaler.transform(X))
-
-    # Plotting
-    fig, ax1 = plt.subplots(figsize=(12, 6))
-
-    # Plot the scatter points for gold prices and predicted prices
+    # Plot 1: Gold Prices with Line of Best Fit
+    ax1 = axes[0]
     ax1.plot(dates_sorted, gold_prices_sorted, label='Gold Prices')
-    ax1.plot(dates_sorted, predicted_prices, color='orange', label='MLP (Model)')
+    coefficients = np.polyfit(mdates.date2num(dates_sorted), gold_prices_sorted, 1)
+    line_of_best_fit = np.poly1d(coefficients)
+    ax1.plot(dates_sorted, line_of_best_fit(mdates.date2num(dates_sorted)), color='red', label='Line of Best Fit', linestyle='--')
     ax1.set_title("Gold Prices Over Time")
     ax1.set_ylabel('Price')
     ax1.set_xlabel('Date')
     ax1.legend()
     ax1.grid(True)
 
-    # Calculate and display mean squared error
-    mse_train = mean_squared_error(y_train, predicted_prices_train)
-    mse_test = mean_squared_error(y_test, predicted_prices_test)
-    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Training): {mse_train:.2f}</p>",
-                unsafe_allow_html=True)
-    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Testing): {mse_test:.2f}</p>",
-                unsafe_allow_html=True)
+    # Calculate average price
+    average_price = np.mean(gold_prices_sorted)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Average Gold Price: ${average_price:.2f}</p>", unsafe_allow_html=True)
 
-    # Histogram and KDE (commented out for brevity)
-    # ax2 = fig.add_subplot(212)
-    # sns.histplot(gold_prices_sorted, kde=
+    # Plot 2: Histogram and KDE
+    ax2 = axes[1]
+    sns.histplot(gold_prices_sorted, kde=True, color="skyblue", ax=ax2)
+    ax2.set_title("Gold Price Distribution (Histogram & KDE)")
+    ax2.set_xlabel("Gold Price")
+    ax2.set_ylabel("Frequency")
+
+    # Plot 3: Box Plot
+    ax3 = axes[2]
+    sns.boxplot(x=gold_prices_sorted, ax=ax3, orient='h', color='lightblue')
+    ax3.set_title("Gold Price Distribution (Box Plot)")
+    ax3.set_xlabel("Gold Price")
+
+    plt.tight_layout()
+
+    return fig
+
+
+# Get minimum and maximum date from the dataframe
+min_date = goldDf['Date'].min()
+max_date = goldDf['Date'].max()
+
+# Create a slider to select date range
+date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date, value=(min_date, max_date))
+
+# Visualize the Gold Prices
+fig = visualize(goldDf, date_range)
+st.pyplot(fig)
+
+# Prediction section (commented out for brevity)
+# st.subheader
