@@ -83,7 +83,4 @@ def visualize(goldDf, date_range):
 
     # Histogram and KDE (commented out for brevity)
     # ax2 = fig.add_subplot(212)
-    # sns.histplot(gold_prices_sorted, kde=True, color="skyblue", ax=ax2)
-    # ax2.set_title("Gold Price Distribution (Histogram & KDE)")
-
-    plt.tight_layout()
+    # sns.histplot(gold_prices_sorted, kde=
