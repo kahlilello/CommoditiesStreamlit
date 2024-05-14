@@ -38,12 +38,28 @@ def visualize(goldDf, date_range):
     # Ensure dates are sorted in ascending order
     dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
 
-    # Split data into features and target (for prediction section)
+    # Split data into features and target
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
     y = gold_prices_sorted
 
-    # MLP Regressor model (prediction section)
-    # Removed for brevity - can be included if desired
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Feature scaling
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    # MLP Regressor model
+    mlp_model = MLPRegressor(hidden_layer_sizes=(100, 100), activation='relu', solver='adam', random_state=42)
+    mlp_model.fit(X_train_scaled, y_train)
+
+    # Predict using the trained models
+    predicted_prices_train = mlp_model.predict(X_train_scaled)
+    predicted_prices_test = mlp_model.predict(X_test_scaled)
+
+    # Predict using the trained models for entire date range
+    predicted_prices = mlp_model.predict(scaler.transform(X))
 
     # Plotting - combined visualizations
     fig, axes = plt.subplots(3, 1, figsize=(12, 15))
@@ -66,32 +82,4 @@ def visualize(goldDf, date_range):
 
     # Plot 2: Histogram and KDE
     ax2 = axes[1]
-    sns.histplot(gold_prices_sorted, kde=True, color="skyblue", ax=ax2)
-    ax2.set_title("Gold Price Distribution (Histogram & KDE)")
-    ax2.set_xlabel("Gold Price")
-    ax2.set_ylabel("Frequency")
-
-    # Plot 3: Box Plot
-    ax3 = axes[2]
-    sns.boxplot(x=gold_prices_sorted, ax=ax3, orient='h', color='lightblue')
-    ax3.set_title("Gold Price Distribution (Box Plot)")
-    ax3.set_xlabel("Gold Price")
-
-    plt.tight_layout()
-
-    return fig
-
-
-# Get minimum and maximum date from the dataframe
-min_date = goldDf['Date'].min()
-max_date = goldDf['Date'].max()
-
-# Create a slider to select date range
-date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date, value=(min_date, max_date))
-
-# Visualize the Gold Prices
-fig = visualize(goldDf, date_range)
-st.pyplot(fig)
-
-# Prediction section (commented out for brevity)
-# st.subheader
+    sns.histplot(gold_prices_sorted, kde=True,
