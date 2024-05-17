@@ -4,6 +4,10 @@ import matplotlib.dates as mdates
 import seaborn as sns
 import numpy as np
 import streamlit as st
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import StandardScaler
 
 # Data Ingestion
 data_path = "commodities_12_22.csv"
@@ -157,6 +161,9 @@ def MLvisualize(goldDf, date_range):
     plt.tight_layout()
 
     return fig
+
+st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Gold </p>", unsafe_allow_html=True)
+
 
 # Visualize the Gold Prices
 fig2 = MLvisualize(goldDf, date_range)
