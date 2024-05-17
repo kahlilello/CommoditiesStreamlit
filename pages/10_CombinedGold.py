@@ -162,8 +162,8 @@ def MLvisualize(goldDf, date_range):
 
     return fig
 
-st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Gold </p>", unsafe_allow_html=True)
 
+st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Gold </p>", unsafe_allow_html=True)
 
 # Visualize the Gold Prices
 fig2 = MLvisualize(goldDf, date_range)
