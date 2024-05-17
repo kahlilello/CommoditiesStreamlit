@@ -39,6 +39,58 @@ def visualize(goldDf, date_range):
     # Ensure dates are sorted in ascending order
     dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
 
+    # Plotting
+    fig, axes = plt.subplots(4, 1, figsize=(12, 20))
+
+    # Plot the scatter points for gold prices and line of best fit
+    ax1 = axes[0]
+    ax1.plot(dates_sorted, gold_prices_sorted, label='Gold Prices')
+    coefficients = np.polyfit(mdates.date2num(dates_sorted), gold_prices_sorted, 1)
+    line_of_best_fit = np.poly1d(coefficients)
+    ax1.plot(dates_sorted, line_of_best_fit(mdates.date2num(dates_sorted)), color='red', label='Line of Best Fit', linestyle='--')
+    ax1.set_title("Gold Prices Over Time")
+    ax1.set_ylabel('Price')
+    ax1.set_xlabel('Date')
+    ax1.legend()
+    ax1.grid(True)
+
+    # Calculate average price
+    average_price = np.mean(gold_prices_sorted)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Average Gold Price: ${average_price:.2f}</p>", unsafe_allow_html=True)
+
+    # Histogram and KDE
+    ax2 = axes[1]
+    sns.histplot(gold_prices_sorted, kde=True, color="skyblue", ax=ax2)
+    ax2.set_title("Gold Price Distribution (Histogram & KDE)")
+    ax2.set_xlabel("Gold Price")
+    ax2.set_ylabel("Frequency")
+
+    # Box Plot
+    ax3 = axes[2]
+    sns.boxplot(x=gold_prices_sorted, ax=ax3, orient='h', color='lightblue')
+    ax3.set_title("Gold Price Distribution (Box Plot)")
+    ax3.set_xlabel("Gold Price")
+
+    # Heatmap
+    ax4 = axes[3]
+    numeric_dates = mdates.date2num(dates_sorted)
+    data = np.vstack((numeric_dates, gold_prices_sorted)).T
+    correlation_matrix = np.corrcoef(data, rowvar=False)
+    sns.heatmap(correlation_matrix, annot=True, cmap="YlGnBu", ax=ax4, 
+                xticklabels=["Date", "Gold Price"], yticklabels=["Date", "Gold Price"])
+    ax4.set_title("Correlation Heatmap")
+
+
+    # Filter data based on selected date range
+    goldDf_filtered = goldDf[(goldDf['Date'] >= date_range[0]) & (goldDf['Date'] <= date_range[1])]
+
+    # Convert date strings to datetime objects
+    dates = pd.to_datetime(goldDf_filtered['Date'])
+    gold_prices = goldDf_filtered['Gold'].values
+
+    # Ensure dates are sorted in ascending order
+    dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
+
     # Split data into features and target
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
     y = gold_prices_sorted
@@ -62,25 +114,43 @@ def visualize(goldDf, date_range):
     # Predict using the trained models for entire date range
     predicted_prices = mlp_model.predict(scaler.transform(X))
 
-    # Plotting - combined visualizations
-    fig, axes = plt.subplots(3, 1, figsize=(12, 15))
+    # Plotting
+    fig, axes = plt.subplots(2, 1, figsize=(12, 12))
 
-    # Plot 1: Gold Prices with Line of Best Fit
+    # Plot the scatter points for gold prices and line of best fit
     ax1 = axes[0]
     ax1.plot(dates_sorted, gold_prices_sorted, label='Gold Prices')
-    coefficients = np.polyfit(mdates.date2num(dates_sorted), gold_prices_sorted, 1)
-    line_of_best_fit = np.poly1d(coefficients)
-    ax1.plot(dates_sorted, line_of_best_fit(mdates.date2num(dates_sorted)), color='red', label='Line of Best Fit', linestyle='--')
+    ax1.plot(dates, predicted_prices, color='orange', label='MLP (Model)')
     ax1.set_title("Gold Prices Over Time")
     ax1.set_ylabel('Price')
     ax1.set_xlabel('Date')
     ax1.legend()
     ax1.grid(True)
 
-    # Calculate average price
-    average_price = np.mean(gold_prices_sorted)
-    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Average Gold Price: ${average_price:.2f}</p>", unsafe_allow_html=True)
+    # Calculate and display mean squared error
+    mse_train = mean_squared_error(y_train, predicted_prices_train)
+    mse_test = mean_squared_error(y_test, predicted_prices_test)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Training): {mse_train:.2f}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Testing): {mse_test:.2f}</p>", unsafe_allow_html=True)
 
-    # Plot 2: Histogram and KDE
+    # Histogram and KDE
     ax2 = axes[1]
-    sns.histplot(gold_prices_sorted, kde=True,
+    sns.histplot(gold_prices_sorted, kde=True, color="skyblue", ax=ax2)
+    ax2.set_title("Gold Price Distribution (Histogram & KDE)")
+    ax2.set_xlabel("Gold Price")
+    ax2.set_ylabel("Frequency")
+
+    plt.tight_layout()
+
+    return fig
+
+# Get minimum and maximum date from the dataframe
+min_date = goldDf['Date'].min()
+max_date = goldDf['Date'].max()
+
+# Create a slider to select date range
+date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date, value=(min_date, max_date))
+
+# Visualize the Gold Prices
+fig = visualize(goldDf, date_range)
+st.pyplot(fig)
