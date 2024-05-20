@@ -8,3 +8,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import StandardScaler
+
+# Data Ingestion
+data_path = "commodities_12_22.csv"
+# Read the CSV file into a pandas dataframe
+df = pd.read_csv(data_path)
+
+# Data Cleaning 
+commoditiesDf = df.dropna(axis=0)
+
+# Convert the 'Date' column to datetime objects
+commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
