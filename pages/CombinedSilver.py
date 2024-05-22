@@ -19,3 +19,6 @@ commoditiesDf = df.dropna(axis=0)
 
 # Convert the 'Date' column to datetime objects
 commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
+
+# Silver Table
+silverDf = commoditiesDf[['Date','Silver']]
