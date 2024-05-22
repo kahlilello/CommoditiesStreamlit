@@ -29,3 +29,5 @@ st.title('\tSilver Prices Visualization')
 
 # Function visualize Gold Table w/ LoBF
 def visualize(goldDf, date_range):
+    # Filter data based on selected date range
+    goldDf_filtered = goldDf[(goldDf['Date'] >= date_range[0]) & (goldDf['Date'] <= date_range[1])]
