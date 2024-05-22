@@ -22,3 +22,6 @@ commoditiesDf['Date'] = pd.to_datetime(commoditiesDf['Date']).dt.date
 
 # Silver Table
 silverDf = commoditiesDf[['Date','Silver']]
+
+# Set up Streamlit App
+st.title('\tSilver Prices Visualization')
