@@ -25,3 +25,7 @@ silverDf = commoditiesDf[['Date','Silver']]
 
 # Set up Streamlit App
 st.title('\tSilver Prices Visualization')
+
+
+# Function visualize Gold Table w/ LoBF
+def visualize(goldDf, date_range):
