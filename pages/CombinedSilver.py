@@ -35,3 +35,8 @@ def visualize(goldDf, date_range):
      # Convert date strings to datetime objects
     dates = pd.to_datetime(goldDf_filtered['Date'])
     gold_prices = goldDf_filtered['Gold'].values
+
+    # Ensure dates are sorted in ascending order
+    dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
+
+    
