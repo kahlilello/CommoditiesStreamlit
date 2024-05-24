@@ -39,4 +39,6 @@ def visualize(goldDf, date_range):
     # Ensure dates are sorted in ascending order
     dates_sorted, gold_prices_sorted = zip(*sorted(zip(dates, gold_prices)))
 
-    
+    # Split data into features and target
+    X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
+    y = gold_prices_sorted
