@@ -31,3 +31,7 @@ st.title('\tSilver Prices Visualization')
 def visualize(goldDf, date_range):
     # Filter data based on selected date range
     goldDf_filtered = goldDf[(goldDf['Date'] >= date_range[0]) & (goldDf['Date'] <= date_range[1])]
+
+     # Convert date strings to datetime objects
+    dates = pd.to_datetime(goldDf_filtered['Date'])
+    gold_prices = goldDf_filtered['Gold'].values
