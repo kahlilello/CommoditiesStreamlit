@@ -42,3 +42,11 @@ def visualize(goldDf, date_range):
     # Split data into features and target
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
     y = gold_prices_sorted
+
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Feature scaling
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
