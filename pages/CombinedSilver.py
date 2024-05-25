@@ -50,3 +50,7 @@ def visualize(goldDf, date_range):
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
+
+    # MLP Regressor model
+    mlp_model = MLPRegressor(hidden_layer_sizes=(100, 100), activation='relu', solver='adam', random_state=42)
+    mlp_model.fit(X_train_scaled, y_train)
