@@ -54,3 +54,7 @@ def visualize(goldDf, date_range):
     # MLP Regressor model
     mlp_model = MLPRegressor(hidden_layer_sizes=(100, 100), activation='relu', solver='adam', random_state=42)
     mlp_model.fit(X_train_scaled, y_train)
+
+    # Predict using the trained models
+    predicted_prices_train = mlp_model.predict(X_train_scaled)
+    predicted_prices_test = mlp_model.predict(X_test_scaled)
