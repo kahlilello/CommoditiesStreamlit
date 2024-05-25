@@ -58,3 +58,7 @@ def visualize(goldDf, date_range):
     # Predict using the trained models
     predicted_prices_train = mlp_model.predict(X_train_scaled)
     predicted_prices_test = mlp_model.predict(X_test_scaled)
+
+
+    # Predict using the trained models for entire date range
+    predicted_prices = mlp_model.predict(scaler.transform(X))
