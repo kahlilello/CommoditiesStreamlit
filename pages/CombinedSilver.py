@@ -69,3 +69,4 @@ def visualize(goldDf, date_range):
 
     # Plot the scatter points for gold prices and line of best fit
     ax1 = axes[0]
+    ax1.plot(dates_sorted, gold_prices_sorted, label='Gold Prices')
