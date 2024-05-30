@@ -71,3 +71,4 @@ def visualize(goldDf, date_range):
     ax1 = axes[0]
     ax1.plot(dates_sorted, gold_prices_sorted, label='Gold Prices')
     ax1.plot(dates, predicted_prices, color='orange', label='MLP (Model)')
+    ax1.set_title("Gold Prices Over Time")
