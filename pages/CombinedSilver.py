@@ -75,4 +75,5 @@ def visualize(goldDf, date_range):
     ax1.set_ylabel('Price') 
     ax1.set_xlabel('Date')
     ax1.legend()
+    ax1.grid(True)
     
