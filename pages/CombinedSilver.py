@@ -78,4 +78,5 @@ def visualize(goldDf, date_range):
     ax1.grid(True)
 
     # Calculate and display mean squared error
+    mse_train = mean_squared_error(y_train, predicted_prices_train)
     
