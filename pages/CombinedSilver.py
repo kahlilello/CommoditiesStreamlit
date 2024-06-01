@@ -80,4 +80,6 @@ def visualize(goldDf, date_range):
     # Calculate and display mean squared error
     mse_train = mean_squared_error(y_train, predicted_prices_train)
     mse_test = mean_squared_error(y_test, predicted_prices_test)
+    st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Training): {mse_train:.2f}</p>", unsafe_allow_html=True)
+
     
