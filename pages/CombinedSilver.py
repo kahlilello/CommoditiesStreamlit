@@ -83,4 +83,5 @@ def visualize(goldDf, date_range):
     st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Training): {mse_train:.2f}</p>", unsafe_allow_html=True)
 
     # Histogram and KDE
+    ax2 = axes[1]
     
