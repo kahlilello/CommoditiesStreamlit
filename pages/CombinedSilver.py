@@ -84,4 +84,5 @@ def visualize(goldDf, date_range):
 
     # Histogram and KDE
     ax2 = axes[1]
+    sns.histplot(gold_prices_sorted, kde=True, color="skyblue", ax=ax2)
     
