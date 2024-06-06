@@ -87,3 +87,4 @@ def visualize(goldDf, date_range):
     sns.histplot(gold_prices_sorted, kde=True, color="skyblue", ax=ax2)
     ax2.set_title("Silver Price Distribution (Histogram & KDE)")
     ax2.set_xlabel("Silver Price")
+    ax2.
