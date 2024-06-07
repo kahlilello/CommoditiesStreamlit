@@ -89,4 +89,4 @@ def visualize(goldDf, date_range):
     ax2.set_xlabel("Silver Price")
     ax2.set_ylabel("Frequency")
 
-    plt.
+    plt.tight_layout()
