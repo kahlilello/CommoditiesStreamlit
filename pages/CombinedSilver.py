@@ -88,3 +88,5 @@ def visualize(goldDf, date_range):
     ax2.set_title("Silver Price Distribution (Histogram & KDE)")
     ax2.set_xlabel("Silver Price")
     ax2.set_ylabel("Frequency")
+
+    plt.
