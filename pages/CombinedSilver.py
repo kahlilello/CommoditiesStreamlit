@@ -90,3 +90,5 @@ def visualize(goldDf, date_range):
     ax2.set_ylabel("Frequency")
 
     plt.tight_layout()
+
+    return
