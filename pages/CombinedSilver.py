@@ -91,4 +91,5 @@ def visualize(goldDf, date_range):
 
     plt.tight_layout()
 
-    return
+    return fig
+
