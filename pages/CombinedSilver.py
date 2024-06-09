@@ -93,4 +93,4 @@ def visualize(goldDf, date_range):
 
     return fig
 
-st.markdown(f"")
+st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Gold </p>")
