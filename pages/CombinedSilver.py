@@ -96,3 +96,5 @@ def visualize(goldDf, date_range):
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
 # Visualize the Gold Prices
+
+fig2 =
