@@ -97,4 +97,4 @@ st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silv
 
 # Visualize the Gold Prices
 
-fig2 =
+fig2 = MLVisualize()
