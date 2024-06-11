@@ -28,7 +28,7 @@ st.title('\tSilver Prices Visualization')
 
 
 # Function visualize Gold Table w/ LoBF
-def visualize(goldDf, date_range):
+def MLvisualize(goldDf, date_range):
     # Filter data based on selected date range
     goldDf_filtered = goldDf[(goldDf['Date'] >= date_range[0]) & (goldDf['Date'] <= date_range[1])]
 
@@ -96,6 +96,5 @@ def visualize(goldDf, date_range):
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
 # Visualize the Gold Prices
-
 fig2 = MLvisualize(goldDf, date_range)
 st.pyplot(fig2)
