@@ -95,6 +95,7 @@ def MLvisualize(goldDf, date_range):
 
 # Get min and max date from dataframe
 min_date = silverDf['Date'].min()
+max_date = silverDf['Date'].max()
 
 
 
