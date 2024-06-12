@@ -97,7 +97,7 @@ def MLvisualize(goldDf, date_range):
 min_date = silverDf['Date'].min()
 max_date = silverDf['Date'].max()
 
-
+# Create a slider to select date range 
 
 
 
