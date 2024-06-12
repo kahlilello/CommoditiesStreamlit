@@ -98,7 +98,7 @@ min_date = silverDf['Date'].min()
 max_date = silverDf['Date'].max()
 
 # Create a slider to select date range 
-
+date_date = st.slider('Select a date range', min_value=min_date, max_value=max_date)
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
