@@ -28,7 +28,7 @@ st.title('\tSilver Prices Visualization')
 
 
 # Function visualize Gold Table w/ LoBF
-def MLvisualize(goldDf, date_range):
+def visualize(goldDf, date_range):
     # Filter data based on selected date range
     goldDf_filtered = goldDf[(goldDf['Date'] >= date_range[0]) & (goldDf['Date'] <= date_range[1])]
 
@@ -98,7 +98,10 @@ min_date = silverDf['Date'].min()
 max_date = silverDf['Date'].max()
 
 # Create a slider to select date range 
-date_date = st.slider('Select a date range', min_value=min_date, max_value=max_date)
+date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date)
+
+
+
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
