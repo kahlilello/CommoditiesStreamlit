@@ -101,7 +101,7 @@ max_date = silverDf['Date'].max()
 date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date)
 
 # Visualize the Silver Prices
-
+fig = visualize(silverDf, date_range)
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
