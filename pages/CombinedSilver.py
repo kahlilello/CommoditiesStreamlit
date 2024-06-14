@@ -105,6 +105,9 @@ fig = visualize(silverDf, date_range)
 st.pyplot(fig)
 
 # Function visualize Silver Table w/ LoBF
+def MLvisualize(silverDf, date_range):
+    
+
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
