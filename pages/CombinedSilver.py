@@ -104,7 +104,7 @@ date_range = st.slider('Select a date range', min_value=min_date, max_value=max_
 fig = visualize(silverDf, date_range)
 st.pyplot(fig)
 
-# Function 
+# Function visualize Silver Table w/ LoBF
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
