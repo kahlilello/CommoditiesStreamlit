@@ -100,7 +100,7 @@ max_date = silverDf['Date'].max()
 # Create a slider to select date range 
 date_range = st.slider('Select a date range', min_value=min_date, max_value=max_date)
 
-
+# Visualize the Silver Prices
 
 
 
