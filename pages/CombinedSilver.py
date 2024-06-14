@@ -106,6 +106,7 @@ st.pyplot(fig)
 
 # Function visualize Silver Table w/ LoBF
 def MLvisualize(silverDf, date_range):
+    #Filter data based on selected date range
     
 
 
