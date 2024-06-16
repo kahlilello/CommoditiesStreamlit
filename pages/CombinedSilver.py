@@ -107,11 +107,11 @@ st.pyplot(fig)
 # Function visualize Silver Table w/ LoBF
 def MLvisualize(silverDf, date_range):
     #Filter data based on selected date range
-    silverDF_filtered = silverDf[(silverDf['Date'] >= date_range[0]) & (silverDf['Date'] <= date_range[1])]
-
-    
+    silverDf_filtered = silverDf[(silverDf['Date'] >= date_range[0]) & (silverDf['Date'] <= date_range[1])]
 
     # Convert date strings to datetome objects
+    dates = pd.to_datetime(silverDf_filtered['Date'])
+
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
 
 
