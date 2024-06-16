@@ -109,7 +109,10 @@ def MLvisualize(silverDf, date_range):
     #Filter data based on selected date range
     silverDF_filtered = silverDf[(silverDf['Date'] >= date_range[0]) & (silverDf['Date'] <= date_range[1])]
 
-    # Convert date stringhs to datetome objects
+    
+
+    # Convert date strings to datetome objects
+    X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
