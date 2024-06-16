@@ -111,6 +111,7 @@ def MLvisualize(silverDf, date_range):
 
     # Convert date strings to datetome objects
     dates = pd.to_datetime(silverDf_filtered['Date'])
+    gold_prices = silverDf_filtered['Gold'].values
 
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
 
