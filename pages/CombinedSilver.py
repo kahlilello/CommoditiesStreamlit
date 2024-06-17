@@ -113,6 +113,9 @@ def MLvisualize(silverDf, date_range):
     dates = pd.to_datetime(silverDf_filtered['Date'])
     silver_prices = silverDf_filtered['Gold'].values
 
+    # Ensure dates are sorted in ascending order
+    dates_sorted, silver_prices_sorted = zip(*sorted(zip(dates, silver_prices)))
+
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
     y = silver_prices_sorted
 
