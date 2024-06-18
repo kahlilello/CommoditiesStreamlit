@@ -120,6 +120,8 @@ def MLvisualize(silverDf, date_range):
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
     y = silver_prices_sorted
 
+    # Split data into training and testing sets
+
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
 # Visualize the Gold Prices
