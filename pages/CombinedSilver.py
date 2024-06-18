@@ -116,6 +116,7 @@ def MLvisualize(silverDf, date_range):
     # Ensure dates are sorted in ascending order
     dates_sorted, silver_prices_sorted = zip(*sorted(zip(dates, silver_prices)))
 
+    # Split data into features and target
     X = np.array(mdates.date2num(dates_sorted)).reshape(-1, 1)
     y = silver_prices_sorted
 
