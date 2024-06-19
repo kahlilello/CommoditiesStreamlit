@@ -124,7 +124,7 @@ def MLvisualize(silverDf, date_range):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
 
     # Feature scaling
-    
+    scaler = StandardScaler()
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
