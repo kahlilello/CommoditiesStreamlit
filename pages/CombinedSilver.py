@@ -129,7 +129,7 @@ def MLvisualize(silverDf, date_range):
     X_test_scaled = scaler.transform(X_test)
 
     # MLP Regressor model
-    mlp_model = MLPRegressor(hidden_layer_sizes = (100,100), activation = 'relu')
+    mlp_model = MLPRegressor(hidden_layer_sizes = (100,100), activation = 'relu', solver = 'adam')
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
