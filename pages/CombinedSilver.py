@@ -137,7 +137,7 @@ def MLvisualize(silverDf, date_range):
     predicted_prices_test = mlp_model.predict(X_test_scaled)
 
     # Predict using the trained models for entire data range
-    predicted_prices = mlp_model.predict()
+    predicted_prices = mlp_model.predict(scaler.transform(X))
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
