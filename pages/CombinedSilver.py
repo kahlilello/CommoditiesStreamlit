@@ -132,6 +132,8 @@ def MLvisualize(silverDf, date_range):
     mlp_model = MLPRegressor(hidden_layer_sizes = (100,100), activation = 'relu', solver = 'adam', random_state = 42)
     mlp_model.fit(X_train_scaled, y_train)
 
+    # Predit using the trained models
+
     # Predicgt using the trained models for entire data range
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
