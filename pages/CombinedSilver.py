@@ -133,7 +133,8 @@ def MLvisualize(silverDf, date_range):
     mlp_model.fit(X_train_scaled, y_train)
 
     # Predit using the trained models
-    predicted_prices_train = 
+    predicted_prices_train = mlp_model.predict(X_train_scaled)
+    
 
     # Predicgt using the trained models for entire data range
 
