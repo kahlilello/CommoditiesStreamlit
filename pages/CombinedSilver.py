@@ -147,6 +147,8 @@ def MLvisualize(silverDf, date_range):
     ax1.plot(dates_sorted, silver_prices_sorted, label = 'Silver Prices')
     ax1.plot(dates, predicted_prices, color = 'orange', label = 'MLP (Model)')
     ax1.set_title('Silver Prices Over Time')
+    ax1.set_ylabel('Price')
+    ax1.set_xlabel('Date')
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
