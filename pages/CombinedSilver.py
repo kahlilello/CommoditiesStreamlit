@@ -139,6 +139,8 @@ def MLvisualize(silverDf, date_range):
     # Predict using the trained models for entire data range
     predicted_prices = mlp_model.predict(scaler.transform(X))
 
+    # Plotting 
+
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
 # Visualize the Gold Prices
