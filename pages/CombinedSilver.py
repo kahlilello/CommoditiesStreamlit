@@ -142,6 +142,9 @@ def MLvisualize(silverDf, date_range):
     # Plotting 
     fig, axes = plt.subplots(2, 1, figsize =(12, 12))
 
+    # Plot the scatter points for gold prices and line of best fit 
+    ax1 = axes[0]
+
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
 # Visualize the Gold Prices
