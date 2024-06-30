@@ -140,7 +140,7 @@ def MLvisualize(silverDf, date_range):
     predicted_prices = mlp_model.predict(scaler.transform(X))
 
     # Plotting 
-    fig, axes = plt.subplots(2, 1, figsize =
+    fig, axes = plt.subplots(2, 1, figsize =(12, 12))
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
