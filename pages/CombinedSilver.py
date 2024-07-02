@@ -149,7 +149,7 @@ def MLvisualize(silverDf, date_range):
     ax1.set_title('Silver Prices Over Time')
     ax1.set_ylabel('Price')
     ax1.set_xlabel('Date')
-    ax1.
+    ax1.legend()
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
