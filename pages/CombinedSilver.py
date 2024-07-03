@@ -154,6 +154,7 @@ def MLvisualize(silverDf, date_range):
 
     # Calculate and display MSE
     mse_train = mean_squared_error(y_train, predicted_prices_train)
+    mse_test = 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
 
