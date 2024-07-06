@@ -159,7 +159,8 @@ def MLvisualize(silverDf, date_range):
     st.markdown(f"<p style='font-size:18px;font-weight:bold;'>Mean Squared Error (Testing): {mse_test:.2f}</p>", unsafe_allow_html=True)
 
     # Histogram and KDE
-    ax2 = 
+    ax2 = axes[1]
+    sns.histplot()
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
