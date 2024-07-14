@@ -160,7 +160,8 @@ def MLvisualize(silverDf, date_range):
 
     # Histogram and KDE
     ax2 = axes[1]
-    sns.histplot(silver_prices_sorted, kde = True, color = "skyblue")
+    sns.histplot(silver_prices_sorted, kde = True, color = "skyblue", ax = ax2)
+    
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
