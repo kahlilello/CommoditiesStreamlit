@@ -115,4 +115,4 @@ st.pyplot(fig_copper)
 fig_natural_gas = visualize(naturalgasDf, 'Natural Gas', date_range)
 st.pyplot(fig_natural_gas)
 
-
+#
