@@ -162,7 +162,8 @@ def MLvisualize(silverDf, date_range):
     ax2 = axes[1]
     sns.histplot(silver_prices_sorted, kde = True, color = "skyblue", ax = ax2)
     
-	#Test
+    
+    
 
 
 
