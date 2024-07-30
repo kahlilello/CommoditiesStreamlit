@@ -1,4 +1,4 @@
-import pandas as pd
+#import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import seaborn as sns
@@ -161,7 +161,14 @@ def MLvisualize(silverDf, date_range):
     # Histogram and KDE
     ax2 = axes[1]
     sns.histplot(silver_prices_sorted, kde = True, color = "skyblue", ax = ax2)
+<<<<<<< HEAD
     ax2.set_title("Silver Prices Distribution (Histogram & KDE)")
+=======
+    
+    # T
+    
+
+>>>>>>> dc39b283e1ab90badbc6bd077c1274108ef3efa0
 
 
 st.markdown(f"<p style='font-size:24px;font-weight:bold;'> Machine Learning Silver </p>", unsafe_allow_html=True)
