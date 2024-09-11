@@ -4,4 +4,4 @@ pandas
 numpy
 seaborn
 datetime
-sklearn
+scikit-learn
