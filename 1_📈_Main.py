@@ -6,8 +6,6 @@ import numpy as np
 from datetime import datetime
 import streamlit as st
 
-test
-
 # Data Ingestion
 data_path = "commodities_12_22.csv"
 # Read the CSV file into a pandas dataframe
